@@ -25,6 +25,7 @@ dependencies:
   # flutter_html_textview: "^0.2.6"
   html_unescape: ^1.0.1+2
   flutter_webview_plugin: ^0.2.1+2
+  xml: ^3.2.1
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:rsscollector/CategoryEntity.dart';
+import 'package:rsscollector/CategoryRssView.dart';
 import 'package:rsscollector/data/RemoteDB.dart';
 import 'ProgressDialogView.dart';
 
@@ -43,7 +44,13 @@ class _CategoryViewState extends State<CategoryView>
             // }
             return Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Column(
+                child: new GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                    return new CategoryRssView(category: _listData[position]);
+                  }));
+                  },
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
@@ -51,7 +58,7 @@ class _CategoryViewState extends State<CategoryView>
                         style:
                             new TextStyle(color: Colors.grey, fontSize: 24.0),
                       )
-                    ]));
+                    ])));
           }),
           onRefresh: () {return handleRefresh();}
           );

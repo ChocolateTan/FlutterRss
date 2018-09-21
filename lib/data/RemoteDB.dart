@@ -27,4 +27,9 @@ class RemoteDB {
     String result = await api.getApiList();
     return json.decode(result);
   }
+
+  Future<String> getRSS(String dataURL)async {
+    String result = await api.getUrl(dataURL);
+    return result;
+  }
 }

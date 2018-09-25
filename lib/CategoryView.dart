@@ -16,7 +16,6 @@ class _CategoryViewState extends State<CategoryView>
   List<CategoryEntity> _listData = [];
   RemoteDB remoteDB = RemoteDB();
 
-
   // TODO: implement wantKeepAlive
   @override
   bool get wantKeepAlive => true;
@@ -34,34 +33,37 @@ class _CategoryViewState extends State<CategoryView>
       return ProgressDialogView.getProgressDialog();
     } else {
       return new RefreshIndicator(
-      child: ListView.separated(
-          itemCount: _listData.length,
-          separatorBuilder: (BuildContext context, int index) => const Divider(),
-          itemBuilder: (BuildContext context, int position) {
-            // if (position.isOdd) {
-            //   // 在每一列之前，添加一个1像素高的分隔线widget
-            //   return const Divider();
-            // }
-            return Padding(
-                padding: EdgeInsets.all(10.0),
-                child: new GestureDetector(
-                  onTap: (){
-                    Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                    return new CategoryRssView(category: _listData[position]);
-                  }));
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        _listData[position].name,
-                        style:
-                            new TextStyle(color: Colors.grey, fontSize: 24.0),
-                      )
-                    ])));
-          }),
-          onRefresh: () {return handleRefresh();}
-          );
+          child: ListView.separated(
+              itemCount: _listData.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+              itemBuilder: (BuildContext context, int position) {
+                // if (position.isOdd) {
+                //   // 在每一列之前，添加一个1像素高的分隔线widget
+                //   return const Divider();
+                // }
+                return ListTile(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(new MaterialPageRoute(builder: (_) {
+                        return new CategoryRssView(
+                            category: _listData[position]);
+                      }));
+                    },
+                    title: Container(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                _listData[position].name,
+                                style: new TextStyle(
+                                    color: Colors.grey, fontSize: 24.0),
+                              )
+                            ])));
+              }),
+          onRefresh: () {
+            return handleRefresh();
+          });
     }
   }
 

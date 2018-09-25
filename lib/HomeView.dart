@@ -57,15 +57,13 @@ class _HomeViewState extends State<HomeView>
             if (position >= _listData.length - 1) {//如果已经达到数组的末尾
               loadDataHome(_apiListData[index]);
             }
-            return Padding(
-                padding: EdgeInsets.all(15.0),
-                child: new GestureDetector(
+            return ListTile(
                   onTap: (){
                     Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
                     return new ArticleDetailView(article: _listData[position]);
                   }));
                   },
-                  child: Column(
+                  title: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
@@ -92,7 +90,7 @@ class _HomeViewState extends State<HomeView>
                       ],
                     )
                   ],
-                )));
+                ));
           }),
           onRefresh: () {return handleRefresh();}
       ); 
@@ -103,7 +101,7 @@ class _HomeViewState extends State<HomeView>
     index = 0;
     var result = await remoteDB.getApiList();
     setState(() {
-      _apiListData = result.reversed.toList();
+      _apiListData = result.toList();
       loadDataHome(_apiListData[index]);
     });
   }

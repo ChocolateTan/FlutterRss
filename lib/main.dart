@@ -6,7 +6,7 @@ import 'data/RemoteDB.dart';
 import 'CategoryView.dart';
 
 void main() {
-  debugPaintSizeEnabled = true; //打开视觉调试开关
+  // debugPaintSizeEnabled = true; //打开视觉调试开关
   runApp(MainApp());
 }
 

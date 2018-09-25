@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:rsscollector/ArticleRssDetailView.dart';
 import 'package:rsscollector/CategoryEntity.dart';
 import 'package:rsscollector/ProgressDialogView.dart';
 import 'package:rsscollector/data/RemoteDB.dart';
@@ -31,11 +30,15 @@ class _CategoryRssViewState extends State<CategoryRssView>
 
   loadData() async {
     String result = await remoteDB.getRSS(widget.category.url);
-    var document = xml.parse(result);
-    var item = document.findAllElements("item");
-    setState(() {
-      listData = item.toList();
-    });
+    if (null != result) {
+      var document = xml.parse(result);
+      var item = document.findAllElements("item");
+      if (null != item && item.length > 0) {
+        setState(() {
+          listData = item.toList();
+        });
+      }
+    }
   }
 
   getView() {
@@ -50,21 +53,36 @@ class _CategoryRssViewState extends State<CategoryRssView>
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
               itemBuilder: (BuildContext context, int position) {
-                return Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: new GestureDetector(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Text(
-                          listData[position].findElements('title').single.text,
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(
-                              color: Colors.black, fontSize: 18.0),
-                        ),
-                      ],
-                    )));
+                return new ListTile(
+                    title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Text(
+                            listData[position]
+                                .findElements('title')
+                                .single
+                                .text,
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(
+                                color: Colors.black, fontSize: 18.0),
+                          )
+                        ]),
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(new MaterialPageRoute(builder: (_) {
+                        return new ArticleRssDetailView(
+                          title: listData[position]
+                              .findElements('title')
+                              .single
+                              .text,
+                          content: listData[position]
+                              .findElements('description')
+                              .single
+                              .text,
+                        );
+                      }));
+                    });
               }),
           onRefresh: () {});
     }

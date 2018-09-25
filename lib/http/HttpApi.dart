@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class HttpApi{
-  Future<String> getUrl(String dataURL) async{
-    http.Response response = await http.get(dataURL);
-    if(response.statusCode == 200){
-      return response.body;
+class HttpApi {
+  Future<String> getUrl(String dataURL) async {
+    try {
+      http.Response response = await http.get(dataURL);
+      if (response.statusCode == 200) {
+        return utf8.decode(response.bodyBytes); //response.body;
+      }
+    } catch (e) {
+      print(e);
     }
     return null;
   }
